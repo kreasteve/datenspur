@@ -1,0 +1,11 @@
+name: Issue-Ping (Diagnose)
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Issue-Event angekommen: ${{ github.event.action }}"
