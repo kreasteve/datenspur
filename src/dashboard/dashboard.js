@@ -23,7 +23,7 @@
 
   const cat = (c) => WW.CATEGORIES[c] || WW.CATEGORIES.unknown;
   const anfragen = (n) => `${n} ${n === 1 ? 'Anfrage' : 'Anfragen'}`;
-  const REPO_URL = 'https://github.com/kreasteve/webwatch';
+  const REPO_URL = 'https://github.com/kreasteve/datenspur';
 
   // Meldung unbekannter Domains: öffnet ein vorausgefülltes GitHub-Issue.
   // Bewusst KEIN direkter Versand — der Nutzer sieht vor dem Absenden genau,
@@ -39,7 +39,7 @@
     }
     lines.push('', `**Gesehen beim Besuch von:** ${d.tab.pageBase || '?'}`,
       '_(Hinweis: Die besuchte Seite hilft bei der Zuordnung — du kannst sie vor dem Absenden aber entfernen.)_',
-      '', `_Gemeldet aus WebWatch ${B.runtime.getManifest().version}. Zu klären: Wem gehört die Domain, was macht der Dienst, welche Kategorie passt?_`);
+      '', `_Gemeldet aus Datenspur ${B.runtime.getManifest().version}. Zu klären: Wem gehört die Domain, was macht der Dienst, welche Kategorie passt?_`);
     const title = ents.length === 1
       ? 'Unbekannte Domain: ' + ents[0].name
       : `Unbekannte Domains (${ents.length}) von ${d.tab.pageBase || '?'}`;
@@ -91,8 +91,8 @@
   // für diesen Tab nichts aufgezeichnet hat.
   const emptyStateHtml = () => `<div class="card">
       <h2>Noch keine Daten für diesen Tab</h2>
-      <p class="hint" style="margin-top:6px">Die Aufzeichnung beginnt, wenn eine Seite <b>geladen</b> wird. Wechsle zum beobachteten Tab und lade die Seite neu (F5) — diese Ansicht füllt sich dann von selbst. Direkt nach der Installation kennt WebWatch bereits offene Seiten noch nicht.</p>
-      ${state.bgError ? `<p class="hint" style="margin-top:6px">⚠ Der Hintergrund-Prozess war nicht erreichbar (<code>${WW.esc(state.bgError)}</code>). Prüfe unter <code>chrome://extensions</code> bei WebWatch den Punkt „Service Worker" auf Fehler und lade die Erweiterung ggf. neu.</p>` : ''}
+      <p class="hint" style="margin-top:6px">Die Aufzeichnung beginnt, wenn eine Seite <b>geladen</b> wird. Wechsle zum beobachteten Tab und lade die Seite neu (F5) — diese Ansicht füllt sich dann von selbst. Direkt nach der Installation kennt Datenspur bereits offene Seiten noch nicht.</p>
+      ${state.bgError ? `<p class="hint" style="margin-top:6px">⚠ Der Hintergrund-Prozess war nicht erreichbar (<code>${WW.esc(state.bgError)}</code>). Prüfe unter <code>chrome://extensions</code> bei Datenspur den Punkt „Service Worker" auf Fehler und lade die Erweiterung ggf. neu.</p>` : ''}
       <div style="margin-top:12px"><button class="std" id="btn-picker">Beobachtete Tabs anzeigen</button></div>
     </div>`;
 
@@ -119,6 +119,7 @@
             <span class="chip"><b>${tab.requests.length}</b> Anfragen gesamt</span>
             <span class="chip"><b>${agg.tp}</b> an Drittserver</span>
             <span class="chip"><b>${score.entTotal}</b> fremde Stellen</span>
+            ${tab.navCount > 1 ? `<span class="chip"><b>${tab.navCount}</b> Seiten in dieser Aufzeichnung</span>` : ''}
             ${agg.blocked ? `<span class="chip"><b>${agg.blocked}</b> blockiert (Adblocker o. ä.)</span>` : ''}
             ${tab.dropped ? `<span class="chip">älteste ${tab.dropped} Anfragen verworfen</span>` : ''}
           </div>
@@ -409,7 +410,7 @@
       return o;
     });
     return {
-      hinweis: 'WebWatch-Mitschnitt: alle Verbindungen, die der Browser beim Besuch dieser Seite aufgebaut hat — wohin sie gingen, wem die Gegenstelle gehört und welche Daten mitgeschickt wurden. Diesen Text kann man z. B. einer KI geben und sich erklären lassen, was er bedeutet.',
+      hinweis: 'Datenspur-Mitschnitt: alle Verbindungen, die der Browser beim Besuch dieser Seite aufgebaut hat — wohin sie gingen, wem die Gegenstelle gehört und welche Daten mitgeschickt wurden. Diesen Text kann man z. B. einer KI geben und sich erklären lassen, was er bedeutet.',
       frage_vorschlag: 'Bitte erkläre mir verständlich: Was verrät dieser Mitschnitt über mich, welche Firmen bekommen dabei Daten, wozu vermutlich — und was davon ist bedenklich?',
       exportiert: new Date().toISOString(),
       seite: d.tab.pageUrl,
@@ -423,7 +424,7 @@
     const blob = new Blob([JSON.stringify(exportData(true), null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'webwatch-' + (state.data.tab.pageHost || 'export') + '.json';
+    a.download = 'datenspur-' + (state.data.tab.pageHost || 'export') + '.json';
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
   };
@@ -558,13 +559,13 @@
     }
     html += '</dl></div>';
 
-    html += `<div class="card"><h2>Über WebWatch — und seine Grenzen</h2>
-      <p>WebWatch zeigt, welche Verbindungen dein Browser beim Besuch einer Seite aufbaut und welche Daten dabei abgeschickt werden. Alles bleibt lokal in deinem Browser; WebWatch selbst baut keine eigenen Verbindungen auf und blockiert nichts — es macht nur sichtbar.</p>
-      <p>Grenzen: WebWatch sieht nur ausgehende Daten, nicht was der Empfänger damit macht. Die Firmen-Datenbank ist kuratiert und unvollständig — „unbekannt" heißt nur: nicht in der Datenbank. Verschlüsselte oder komprimierte Inhalte lassen sich nicht als Text darstellen. Anfragen anderer Browser-Erweiterungen und Systemdienste erscheinen nicht. Und: Was du siehst, hängt stark von deiner Cookie-Banner-Entscheidung und installierten Blockern ab — dieselbe Seite kann bei anderen Menschen ganz anders aussehen.</p>
+    html += `<div class="card"><h2>Über Datenspur — und seine Grenzen</h2>
+      <p>Datenspur zeigt, welche Verbindungen dein Browser beim Besuch einer Seite aufbaut und welche Daten dabei abgeschickt werden. Alles bleibt lokal in deinem Browser; Datenspur selbst baut keine eigenen Verbindungen auf und blockiert nichts — es macht nur sichtbar.</p>
+      <p>Grenzen: Datenspur sieht nur ausgehende Daten, nicht was der Empfänger damit macht. Die Firmen-Datenbank ist kuratiert und unvollständig — „unbekannt" heißt nur: nicht in der Datenbank. Verschlüsselte oder komprimierte Inhalte lassen sich nicht als Text darstellen. Anfragen anderer Browser-Erweiterungen und Systemdienste erscheinen nicht. Und: Was du siehst, hängt stark von deiner Cookie-Banner-Entscheidung und installierten Blockern ab — dieselbe Seite kann bei anderen Menschen ganz anders aussehen.</p>
       <p><b>Redaktioneller Hinweis:</b> Firmen-Zuordnungen und Beschreibungen beruhen auf öffentlich zugänglichen Quellen (Registrierungsdaten, DNS, Zertifikate, Selbstbeschreibungen der Dienste, offene Datensätze); Kategorien und Risiko-Einstufungen sind redaktionelle Bewertungen. Stand: ${WW.esc(WW.DB_STAND)}. Falsche Angaben korrigieren wir nach Prüfung umgehend.</p>
       <p>
-        <a href="https://github.com/kreasteve/webwatch" target="_blank" rel="noopener">Quellcode (GitHub)</a> ·
-        <a href="https://github.com/kreasteve/webwatch/blob/main/KORREKTUREN.md" target="_blank" rel="noopener">Korrekturen &amp; Hinweise für betroffene Unternehmen</a> ·
+        <a href="https://github.com/kreasteve/datenspur" target="_blank" rel="noopener">Quellcode (GitHub)</a> ·
+        <a href="https://github.com/kreasteve/datenspur/blob/main/KORREKTUREN.md" target="_blank" rel="noopener">Korrekturen &amp; Hinweise für betroffene Unternehmen</a> ·
         <a href="https://kreasteve.de/impressum.html" target="_blank" rel="noopener">Impressum</a>
       </p>
     </div></div>`;
@@ -590,7 +591,7 @@
     state.mode = m;
     $('#mode-laie').classList.toggle('active', m === 'laie');
     $('#mode-profi').classList.toggle('active', m === 'profi');
-    B.storage.local.set({ ww_mode: m }).catch(() => {});
+    B.storage.local.set({ ds_mode: m }).catch(() => {});
     renderView();
   };
 
@@ -622,8 +623,20 @@
 
   // ── Start ───────────────────────────────────────────────────
   const init = async () => {
-    const stored = await B.storage.local.get('ww_mode').catch(() => ({}));
-    if (stored && stored.ww_mode === 'profi') setMode('profi');
+    const stored = await B.storage.local.get(['ds_mode', 'ds_reset_on_reload']).catch(() => ({}));
+    if (stored && stored.ds_mode === 'profi') setMode('profi');
+
+    const setReload = $('#set-reload');
+    setReload.checked = !(stored && stored.ds_reset_on_reload === false);
+    setReload.addEventListener('change', () => {
+      B.storage.local.set({ ds_reset_on_reload: setReload.checked }).catch(() => {});
+    });
+    $('#btn-reset-dash').addEventListener('click', async () => {
+      if (state.tabId == null) return;
+      await B.runtime.sendMessage({ type: 'reset', tabId: state.tabId });
+      state.selectedRid = null;
+      fetchData(true);
+    });
 
     $$('.views button').forEach((b) => b.addEventListener('click', () => setView(b.dataset.view)));
     $('#mode-laie').addEventListener('click', () => setMode('laie'));

@@ -19,7 +19,7 @@ const TIMEOUT = 8000;
 
 const jfetch = async (url) => {
   try {
-    const r = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT), headers: { 'user-agent': 'WebWatch-Kuratierung' } });
+    const r = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT), headers: { 'user-agent': 'Datenspur-Kuratierung' } });
     if (!r.ok) return null;
     return await r.json();
   } catch (e) { return null; }
@@ -27,7 +27,7 @@ const jfetch = async (url) => {
 
 const tfetch = async (url) => {
   try {
-    const r = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT), headers: { 'user-agent': 'Mozilla/5.0 (WebWatch-Kuratierung)' } });
+    const r = await fetch(url, { signal: AbortSignal.timeout(TIMEOUT), headers: { 'user-agent': 'Mozilla/5.0 (Datenspur-Kuratierung)' } });
     if (!r.ok) return null;
     return await r.text();
   } catch (e) { return null; }

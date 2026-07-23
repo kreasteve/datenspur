@@ -1,6 +1,6 @@
 # Korrekturen — Hinweise für betroffene Unternehmen
 
-WebWatch ordnet Drittanbieter-Domains Firmen und Kategorien zu und
+Datenspur ordnet Drittanbieter-Domains Firmen und Kategorien zu und
 beschreibt in kurzen redaktionellen Texten, was der jeweilige Dienst
 nach öffentlich zugänglichen Quellen tut. Ziel ist sachliche
 Transparenz, nicht Skandalisierung.
@@ -29,6 +29,6 @@ falsch oder missverständlich halten:**
 - Die Beschreibungstexte tragen einen Stand (siehe README) und werden
   fortlaufend gepflegt.
 
-WebWatch beobachtet ausschließlich den Datenverkehr des eigenen
+Datenspur beobachtet ausschließlich den Datenverkehr des eigenen
 Browsers der Nutzerin/des Nutzers, blockiert nichts und verändert
 nichts.

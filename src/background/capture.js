@@ -58,7 +58,7 @@ globalThis.WW = globalThis.WW || {};
   B.webRequest.onBeforeRequest.addListener((d) => {
     if (skip(d)) return;
     if (d.type === 'main_frame') {
-      WW.store.resetTab(d.tabId, d.url);
+      WW.store.onMainFrame(d.tabId, d.url);
     }
     const tab = WW.store.getOrCreateTab(d.tabId, d.type === 'main_frame' ? d.url : undefined);
     const rec = mkRec(d, tab);

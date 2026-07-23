@@ -1,11 +1,11 @@
-# WebWatch 👁
+# Datenspur 👣
 
 **Sieh selbst, was Websites über dich verschicken.**
 
-WebWatch ist eine Browser-Erweiterung (Firefox & Chrome), die beim Besuch einer
+Datenspur ist eine Browser-Erweiterung (Firefox & Chrome), die beim Besuch einer
 Website live sichtbar macht, welche Verbindungen dein Browser aufbaut: an den
 Betreiber der Seite selbst — und an all die Drittserver, von denen man nichts
-sieht. Zu jeder Verbindung zeigt WebWatch, **wem die Gegenstelle gehört**,
+sieht. Zu jeder Verbindung zeigt Datenspur, **wem die Gegenstelle gehört**,
 **welche Daten mitgeschickt wurden** (in Klartext übersetzt) und **welche
 Risiken** dahinterstecken.
 
@@ -17,7 +17,7 @@ Zwei Ansichten, ein Ziel — Unsichtbares sichtbar machen:
 - **Profi**: alle Anfragen mit Headern, dekodierten Query-Parametern und
   Bodys, Netzwerk-Graph, JSON-Export.
 
-**Datenschutz der Erweiterung selbst:** WebWatch sendet nichts nach Hause,
+**Datenschutz der Erweiterung selbst:** Datenspur sendet nichts nach Hause,
 baut keine eigenen Verbindungen auf und blockiert/verändert nichts. Alle
 Daten bleiben im Browser und verschwinden beim Schließen des Tabs.
 
@@ -35,11 +35,11 @@ Daten bleiben im Browser und verschwinden beim Schließen des Tabs.
 1. `chrome://extensions` öffnen, „Entwicklermodus" aktivieren
 2. „Entpackte Erweiterung laden" → Ordner `dist/chrome` auswählen
 
-Dann: beliebige Website besuchen (ggf. neu laden), auf das WebWatch-Symbol
+Dann: beliebige Website besuchen (ggf. neu laden), auf das Datenspur-Symbol
 klicken. Das Zahlen-Badge am Symbol zeigt, wie viele fremde Stellen die Seite
 kontaktiert hat; die Farbe die Ampel-Einstufung.
 
-## Was WebWatch erkennt
+## Was Datenspur erkennt
 
 - Erst- vs. Drittanbieter-Anfragen (eTLD+1-basiert), pro Tab
 - Zuordnung von ~100 Diensten / mehrere hundert Domains zu Firma & Kategorie
@@ -55,7 +55,7 @@ kontaktiert hat; die Farbe die Ampel-Einstufung.
 
 ## Grenzen (bewusst dokumentiert)
 
-- WebWatch sieht nur, **was abgeschickt wird** — nicht, was der Empfänger
+- Datenspur sieht nur, **was abgeschickt wird** — nicht, was der Empfänger
   damit macht. Die Kategorie-Texte erklären das typische Geschäftsmodell.
 - Die Firmen-Datenbank ist kuratiert und unvollständig; „unbekannt" heißt
   nur: nicht in der Datenbank (`src/common/trackerdb.js`, Beiträge willkommen).

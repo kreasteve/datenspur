@@ -2,12 +2,12 @@
 <html lang="de">
 <head>
   <meta charset="utf-8">
-  <title>WebWatch — Dashboard</title>
+  <title>Datenspur — Dashboard</title>
   <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
   <header class="topbar">
-    <div class="brand"><img src="../icons/icon-32.png" alt="" width="20" height="20"> WebWatch</div>
+    <div class="brand"><img src="../icons/icon-32.png" alt="" width="20" height="20"> Datenspur</div>
     <div class="pageinfo" id="pageinfo"></div>
     <nav class="views">
       <button data-view="uebersicht" class="active">Übersicht</button>
@@ -19,6 +19,10 @@
       <button id="mode-laie" class="active">Einfach</button>
       <button id="mode-profi">Profi</button>
     </div>
+    <label class="cb" title="Wenn aktiv, beginnt die Aufzeichnung beim Neuladen der Seite (F5) von vorn. Beim Wechsel zu einer anderen Seite im selben Tab wird immer weitergesammelt — bis der Tab geschlossen oder manuell geleert wird.">
+      <input type="checkbox" id="set-reload" checked> Neuladen leert
+    </label>
+    <button id="btn-reset-dash" class="std small" title="Aufzeichnung für diesen Tab jetzt leeren">Leeren</button>
   </header>
 
   <main>

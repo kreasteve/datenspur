@@ -22,6 +22,7 @@ globalThis.WW = globalThis.WW || {};
       pageHost: host,
       pageBase: host ? WW.domain.getBaseDomain(host) : '',
       startedAt: Date.now(),
+      navCount: 1,
       requests: [],
       dropped: 0,
       ver: 0,
@@ -29,26 +30,52 @@ globalThis.WW = globalThis.WW || {};
   };
 
   // Meta nachtragen (z. B. nach Service-Worker-Neustart mitten auf einer
-  // Seite) und Erst-/Drittanbieter-Einstufung der bisherigen Anfragen
-  // korrigieren.
+  // Seite). Nur wenn die Seite vorher UNBEKANNT war, wird die
+  // Erst-/Drittanbieter-Einstufung der bisherigen Anfragen neu berechnet —
+  // bei Navigationen behalten alte Anfragen bewusst ihre damalige Einstufung.
   const refreshMeta = (tab, url) => {
     const host = WW.domain.getHost(url);
     if (!host || host === tab.pageHost) return;
+    const hadBase = !!tab.pageBase;
     tab.pageUrl = url;
     tab.pageHost = host;
     tab.pageBase = WW.domain.getBaseDomain(host);
-    const page = { url: tab.pageUrl, base: tab.pageBase };
-    for (const r of tab.requests) {
-      r.tp = WW.domain.isThirdParty(r.host, tab.pageBase);
-      r.insights = WW.analyzeRequest(r, page);
+    if (!hadBase) {
+      const page = { url: tab.pageUrl, base: tab.pageBase };
+      for (const r of tab.requests) {
+        r.tp = WW.domain.isThirdParty(r.host, tab.pageBase);
+        r.insights = WW.analyzeRequest(r, page);
+      }
     }
     tab.ver++;
   };
+
+  const stripHash = (u) => String(u || '').split('#')[0];
 
   const store = {
     // Von main.js gesetzt: wird nach (gedrosseltem) Flush aufgerufen,
     // aktualisiert Badge und benachrichtigt offene UI-Seiten.
     onFlush: null,
+
+    // Einstellungen (aus storage.local gespiegelt, Standard: Reload leert)
+    settings: { resetOnReload: true },
+
+    // Neue Hauptseiten-Anfrage in einem Tab: Reload leert (wenn nicht
+    // abgewählt), Navigation zu einer anderen Seite sammelt weiter —
+    // die Daten bleiben, bis der Tab geschlossen oder manuell geleert wird.
+    onMainFrame(tabId, url) {
+      const tab = tabs.get(tabId);
+      if (!tab || !tab.pageUrl) { this.resetTab(tabId, url); return; }
+      const isReload = stripHash(tab.pageUrl) === stripHash(url);
+      if (isReload && this.settings.resetOnReload) { this.resetTab(tabId, url); return; }
+      const host = WW.domain.getHost(url);
+      tab.pageUrl = url;
+      tab.pageHost = host;
+      tab.pageBase = host ? WW.domain.getBaseDomain(host) : '';
+      if (!isReload) tab.navCount = (tab.navCount || 1) + 1;
+      tab.ver++;
+      this.flush(tabId);
+    },
 
     getOrCreateTab(tabId, urlGuess) {
       let tab = tabs.get(tabId);
@@ -181,4 +208,18 @@ globalThis.WW = globalThis.WW || {};
   };
 
   WW.store = store;
+
+  // Einstellung laden und Änderungen aus dem Dashboard live übernehmen
+  if (B && B.storage && B.storage.local) {
+    Promise.resolve(B.storage.local.get('ds_reset_on_reload'))
+      .then((o) => { if (o && o.ds_reset_on_reload === false) store.settings.resetOnReload = false; })
+      .catch(() => {});
+    if (B.storage.onChanged) {
+      B.storage.onChanged.addListener((changes, area) => {
+        if (area === 'local' && changes.ds_reset_on_reload) {
+          store.settings.resetOnReload = changes.ds_reset_on_reload.newValue !== false;
+        }
+      });
+    }
+  }
 })();

@@ -1,5 +1,5 @@
 'use strict';
-// End-zu-End-Smoketest: startet Chromium mit geladener WebWatch-Extension,
+// End-zu-End-Smoketest: startet Chromium mit geladener Datenspur-Extension,
 // besucht eine lokale Testseite, die echte Tracker-Endpunkte anspricht,
 // und prüft Popup-Datenfluss + alle Dashboard-Ansichten.
 // Aufruf: node smoketest/run_smoketest.js [screenshot-verzeichnis]
@@ -14,10 +14,10 @@ const SHOT_DIR = process.argv[2] || path.join(__dirname, 'screenshots');
 const PORT = 8899;
 
 const TEST_PAGE = `<!doctype html>
-<html lang="de"><head><meta charset="utf-8"><title>WebWatch Smoketest</title>
+<html lang="de"><head><meta charset="utf-8"><title>Datenspur Smoketest</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300..900&display=swap">
 </head><body>
-<h1>WebWatch Smoketest-Seite</h1>
+<h1>Datenspur Smoketest-Seite</h1>
 <img src="https://www.google-analytics.com/collect?v=1&tid=UA-1&cid=123456.789012&sr=1920x1080&dl=http%3A%2F%2Flocalhost%3A${PORT}%2F" width="1" height="1" alt="">
 <script>
   fetch('https://www.google-analytics.com/g/collect?v=2&tid=G-TEST&cid=555.666&sid=111&sr=1920x1080&ul=de-de&dl='
@@ -41,7 +41,7 @@ const check = (name, cond, extra) => {
     res.end(TEST_PAGE);
   }).listen(PORT);
 
-  const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'webwatch-smoke-'));
+  const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'datenspur-smoke-'));
   const launchOpts = {
     headless: true,
     channel: 'chromium', // neues Headless — nötig, damit Extensions laufen
@@ -73,6 +73,10 @@ const check = (name, cond, extra) => {
     await page.reload({ waitUntil: 'load' });
     await page.waitForTimeout(3500); // Anfragen + Flush (600 ms Drossel) abwarten
 
+    // Navigation im selben Tab: Daten müssen erhalten bleiben (kein Reset)
+    await page.goto(`http://localhost:${PORT}/seite2`, { waitUntil: 'load' });
+    await page.waitForTimeout(3000);
+
     // 3. Hintergrund-Zustand direkt im Service Worker prüfen
     const tabs = await sw.evaluate(() => WW.store.listTabs());
     const testTab = tabs.find((t) => (t.pageUrl || '').includes('localhost:' + 8899));
@@ -88,10 +92,14 @@ const check = (name, cond, extra) => {
         entities: Object.keys(agg.entities),
         insights: Object.keys(agg.insights),
         types: [...new Set(tab.requests.map((r) => r.type))],
+        mainFrames: tab.requests.filter((r) => r.type === 'main_frame').length,
+        navCount: tab.navCount,
       };
     }, testTab.tabId);
     check('main_frame nach Neuladen erfasst', summary.types.includes('main_frame'), summary.types);
     check('Stylesheet nach Neuladen erfasst', summary.types.includes('stylesheet'), summary.types);
+    check('Navigation behält Daten (2+ Hauptseiten)', summary.mainFrames >= 2, summary.mainFrames);
+    check('Seitenzähler zählt Navigation', summary.navCount >= 2, summary.navCount);
     console.log('  Auswertung:', JSON.stringify(summary));
     check('Google Analytics erkannt', summary.entities.includes('google-analytics'), summary.entities);
     check('Google Fonts erkannt', summary.entities.includes('google-fonts'), summary.entities);

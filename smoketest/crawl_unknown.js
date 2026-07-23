@@ -21,7 +21,7 @@ const SITES = [
 ];
 
 (async () => {
-  const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'webwatch-crawl-'));
+  const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), 'datenspur-crawl-'));
   const ctx = await chromium.launchPersistentContext(userDataDir, {
     headless: true,
     channel: 'chromium',

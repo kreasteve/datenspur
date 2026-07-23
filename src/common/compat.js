@@ -1,5 +1,5 @@
 'use strict';
-// WebWatch — gemeinsamer Namespace + kleine Helfer.
+// Datenspur — gemeinsamer Namespace + kleine Helfer.
 // Läuft als klassisches Skript in Background (FF-Event-Page / Chrome-SW via
 // importScripts), in Extension-Seiten und im Node-Testharness.
 globalThis.WW = globalThis.WW || {};

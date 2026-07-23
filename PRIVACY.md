@@ -1,12 +1,12 @@
-# Datenschutzerklärung — WebWatch
+# Datenschutzerklärung — Datenspur
 
 Stand: Juli 2026
 
-WebWatch macht sichtbar, welche Verbindungen dein Browser beim Besuch von
+Datenspur macht sichtbar, welche Verbindungen dein Browser beim Besuch von
 Websites aufbaut. Der Zweck der Erweiterung ist Transparenz — und sie hält
 sich selbst daran:
 
-- **WebWatch sammelt nichts.** Es werden keine Daten an die Entwickler oder
+- **Datenspur sammelt nichts.** Es werden keine Daten an die Entwickler oder
   an Dritte übertragen. Die Erweiterung baut keine eigenen Netzwerk-
   verbindungen auf ("phones home" nicht) und enthält keine Telemetrie.
 - **Alles bleibt lokal.** Die aufgezeichneten Verbindungsdaten liegen
@@ -14,7 +14,7 @@ sich selbst daran:
   beim Schließen des Tabs bzw. des Browsers verworfen. Einzige dauerhafte
   Einstellung: der gewählte Anzeigemodus (Einfach/Profi) in
   `storage.local`.
-- **Nichts wird verändert oder blockiert.** WebWatch beobachtet nur.
+- **Nichts wird verändert oder blockiert.** Datenspur beobachtet nur.
 - **Export nur auf deinen Befehl.** Die Kopier-/Export-Funktionen legen
   Daten ausschließlich in deine Zwischenablage bzw. in eine von dir
   gespeicherte Datei. Was du damit machst (z. B. einer KI geben),
@@ -32,7 +32,7 @@ sich selbst daran:
 
 ## Kontakt
 
-Fragen und Meldungen: über den [Issue-Tracker des Quellcode-Repositories](https://github.com/kreasteve/webwatch/issues)
+Fragen und Meldungen: über den [Issue-Tracker des Quellcode-Repositories](https://github.com/kreasteve/datenspur/issues)
 oder das [Impressum](https://kreasteve.de/impressum.html).
 Der vollständige Quellcode ist offen (MIT-Lizenz) und überprüfbar.
 Hinweise für betroffene Unternehmen: [KORREKTUREN.md](KORREKTUREN.md).

@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
-"""Erzeugt die WebWatch-Icons (Auge-Motiv) als PNGs — nur mit der
-Python-Standardbibliothek (zlib + struct), keine Abhängigkeiten."""
-import math
+"""Erzeugt die Datenspur-Icons (Spur aus Datenpunkten) als PNGs — nur mit
+der Python-Standardbibliothek (zlib + struct), keine Abhängigkeiten."""
 import struct
 import zlib
 from pathlib import Path
@@ -10,9 +9,8 @@ OUT = Path(__file__).resolve().parent.parent / "src" / "icons"
 SIZES = [16, 32, 48, 128]
 
 BG = (27, 42, 74)        # dunkles Blau
-EYE = (252, 252, 251)    # Weiß der Augenform
-IRIS = (57, 135, 229)    # Akzent-Blau
-PUPIL = (13, 13, 13)
+DOT = (252, 252, 251)    # Weiß der Spur-Punkte
+ACCENT = (57, 135, 229)  # Akzent-Blau des Zielpunkts
 
 
 def render(size: int, ss: int = 4) -> bytes:
@@ -21,13 +19,24 @@ def render(size: int, ss: int = 4) -> bytes:
     px = bytearray(n * n * 4)
     c = (n - 1) / 2.0
     r_bg = n / 2.0 - ss * 0.5
-    # Augenform: Schnitt zweier Kreise (Linsenform)
-    lens_r = n * 0.62
-    lens_off = n * 0.42
-    iris_r = n * 0.20
-    pupil_r = n * 0.095
-    glint_r = n * 0.045
-    glint_x, glint_y = c + iris_r * 0.35, c - iris_r * 0.35
+
+    # Spur: Punkte wachsender Größe entlang einer sanften Kurve
+    # (quadratische Bézier-Kurve von unten links nach oben rechts)
+    p0 = (0.24 * n, 0.76 * n)
+    ctrl = (0.34 * n, 0.34 * n)
+    p2 = (0.76 * n, 0.32 * n)
+
+    def bezier(t):
+        u = 1.0 - t
+        return (
+            u * u * p0[0] + 2 * u * t * ctrl[0] + t * t * p2[0],
+            u * u * p0[1] + 2 * u * t * ctrl[1] + t * t * p2[1],
+        )
+
+    dots = []
+    for t, rf in [(0.03, 0.052), (0.36, 0.072), (0.67, 0.097), (0.99, 0.145)]:
+        x, y = bezier(t)
+        dots.append((x, y, rf * n))
 
     for y in range(n):
         for x in range(n):
@@ -36,18 +45,10 @@ def render(size: int, ss: int = 4) -> bytes:
             if dx * dx + dy * dy > r_bg * r_bg:
                 continue  # transparent
             col = BG
-            d_top = dx * dx + (dy + lens_off) ** 2
-            d_bot = dx * dx + (dy - lens_off) ** 2
-            if d_top < lens_r * lens_r and d_bot < lens_r * lens_r:
-                col = EYE
-                d_iris = dx * dx + dy * dy
-                if d_iris < iris_r * iris_r:
-                    col = IRIS
-                    if d_iris < pupil_r * pupil_r:
-                        col = PUPIL
-                    gdx, gdy = x - glint_x, y - glint_y
-                    if gdx * gdx + gdy * gdy < glint_r * glint_r:
-                        col = EYE
+            for idx, (cx2, cy2, r) in enumerate(dots):
+                ddx, ddy = x - cx2, y - cy2
+                if ddx * ddx + ddy * ddy < r * r:
+                    col = ACCENT if idx == len(dots) - 1 else DOT
             px[i:i + 4] = bytes((*col, 255))
 
     # Box-Downsampling ss×ss → size×size

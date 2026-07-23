@@ -62,7 +62,7 @@ WW.CATEGORIES = {
     titel: 'Consent-Management (Cookie-Banner)',
     risiko: 1,
     kurz: 'Der technische Dienst hinter dem Cookie-Banner; speichert deine Einwilligungs-Entscheidung.',
-    lang: 'Consent-Management-Plattformen liefern die Cookie-Banner aus und speichern, was du dort angeklickt hast. Sie sind eine Folge der DSGVO: Vieles vom Tracking auf dieser Liste ist rechtlich nur mit Einwilligung erlaubt. Der Dienst selbst sammelt wenig — interessant ist er als Indikator: Er zeigt, dass die Seite einwilligungspflichtige Dienste einsetzt. Beachte: Was WebWatch anzeigt, hängt von deiner Banner-Entscheidung ab — mit „Alles akzeptieren" siehst du hier meist deutlich mehr Verbindungen als mit „Ablehnen". Ein aufschlussreiches Experiment: dieselbe Seite einmal mit und einmal ohne Einwilligung laden und vergleichen.',
+    lang: 'Consent-Management-Plattformen liefern die Cookie-Banner aus und speichern, was du dort angeklickt hast. Sie sind eine Folge der DSGVO: Vieles vom Tracking auf dieser Liste ist rechtlich nur mit Einwilligung erlaubt. Der Dienst selbst sammelt wenig — interessant ist er als Indikator: Er zeigt, dass die Seite einwilligungspflichtige Dienste einsetzt. Beachte: Was Datenspur anzeigt, hängt von deiner Banner-Entscheidung ab — mit „Alles akzeptieren" siehst du hier meist deutlich mehr Verbindungen als mit „Ablehnen". Ein aufschlussreiches Experiment: dieselbe Seite einmal mit und einmal ohne Einwilligung laden und vergleichen.',
   },
   cdn: {
     titel: 'Inhalte & Infrastruktur (CDN)',
@@ -79,8 +79,8 @@ WW.CATEGORIES = {
   unknown: {
     titel: 'Unbekannter Drittanbieter',
     risiko: 2,
-    kurz: 'Eine fremde Gegenstelle, die nicht in der WebWatch-Datenbank steht.',
-    lang: 'Nicht jede fremde Domain lässt sich automatisch einordnen — die WebWatch-Datenbank umfasst die verbreitetsten Dienste, aber bei weitem nicht alle. „Unbekannt" heißt also nicht harmlos und nicht gefährlich, sondern: hier lohnt ein eigener Blick. Hilfreiche Fragen: Was wurde übertragen (siehe Detailansicht)? Klingt der Domainname nach einem CDN des Seitenbetreibers oder nach etwas Fremdem? Eine Websuche nach der Domain bringt oft schnell Klarheit.',
+    kurz: 'Eine fremde Gegenstelle, die nicht in der Datenspur-Datenbank steht.',
+    lang: 'Nicht jede fremde Domain lässt sich automatisch einordnen — die Datenspur-Datenbank umfasst die verbreitetsten Dienste, aber bei weitem nicht alle. „Unbekannt" heißt also nicht harmlos und nicht gefährlich, sondern: hier lohnt ein eigener Blick. Hilfreiche Fragen: Was wurde übertragen (siehe Detailansicht)? Klingt der Domainname nach einem CDN des Seitenbetreibers oder nach etwas Fremdem? Eine Websuche nach der Domain bringt oft schnell Klarheit.',
   },
 };
 
@@ -96,7 +96,7 @@ WW.CATEGORY_ORDER = [
 
 WW.LEXIKON_INTRO = {
   titel: 'Was passiert, wenn du eine Website öffnest?',
-  text: 'Wenn du eine Adresse aufrufst, lädt dein Browser zuerst die Seite selbst — vom Server des Betreibers („Erstanbieter"). Diese Seite enthält aber fast immer Anweisungen, weitere Dinge von ganz anderen Servern nachzuladen: Bilder, Schriften, vor allem aber JavaScript-Programme. Diese Programme laufen in deinem Browser und dürfen dort einiges: Sie sehen, was auf der Seite steht und was du tust, können Gerätedaten auslesen (Bildschirmgröße, Sprache, Zeitzone …) und all das an beliebige Server schicken — im Hintergrund, ohne sichtbares Zeichen. Jede einzelne dieser Verbindungen verrät der Gegenstelle außerdem automatisch deine IP-Adresse und meist die Seite, auf der du dich befindest. Genau diese Verbindungen macht WebWatch sichtbar: wohin sie gehen, wem die Gegenstelle gehört und welche Daten mitgeschickt wurden. WebWatch beobachtet nur — es blockiert nichts und verändert nichts. Wichtig für die Einordnung: Was du siehst, hängt von deiner Cookie-Banner-Entscheidung und installierten Werbeblockern ab. Und: WebWatch sieht nur, was der Browser abschickt — was der Empfänger mit den Daten dann macht, kann keine Software der Welt von außen sehen; hier helfen die Kategorie-Texte mit dem typischen Geschäftsmodell weiter.',
+  text: 'Wenn du eine Adresse aufrufst, lädt dein Browser zuerst die Seite selbst — vom Server des Betreibers („Erstanbieter"). Diese Seite enthält aber fast immer Anweisungen, weitere Dinge von ganz anderen Servern nachzuladen: Bilder, Schriften, vor allem aber JavaScript-Programme. Diese Programme laufen in deinem Browser und dürfen dort einiges: Sie sehen, was auf der Seite steht und was du tust, können Gerätedaten auslesen (Bildschirmgröße, Sprache, Zeitzone …) und all das an beliebige Server schicken — im Hintergrund, ohne sichtbares Zeichen. Jede einzelne dieser Verbindungen verrät der Gegenstelle außerdem automatisch deine IP-Adresse und meist die Seite, auf der du dich befindest. Genau diese Verbindungen macht Datenspur sichtbar: wohin sie gehen, wem die Gegenstelle gehört und welche Daten mitgeschickt wurden. Datenspur beobachtet nur — es blockiert nichts und verändert nichts. Wichtig für die Einordnung: Was du siehst, hängt von deiner Cookie-Banner-Entscheidung und installierten Werbeblockern ab. Und: Datenspur sieht nur, was der Browser abschickt — was der Empfänger mit den Daten dann macht, kann keine Software der Welt von außen sehen; hier helfen die Kategorie-Texte mit dem typischen Geschäftsmodell weiter.',
 };
 
 // Anfragetypen (webRequest ResourceType) → Klartext, was da gerade passiert.

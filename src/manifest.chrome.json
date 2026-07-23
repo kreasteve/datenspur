@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "WebWatch",
-  "version": "0.2.1",
-  "homepage_url": "https://github.com/kreasteve/webwatch",
+  "name": "Datenspur",
+  "version": "0.3.0",
+  "homepage_url": "https://github.com/kreasteve/datenspur",
   "description": "Macht sichtbar, was besuchte Websites an ihre Server und an Dritte schicken — mit Klartext-Erklärungen für Laien und Rohdaten für Profis. Alles bleibt lokal.",
   "permissions": [
     "webRequest",
@@ -16,7 +16,7 @@
     "service_worker": "background/sw.js"
   },
   "action": {
-    "default_title": "WebWatch — was schickt diese Seite wohin?",
+    "default_title": "Datenspur — was schickt diese Seite wohin?",
     "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "icons/icon-16.png",

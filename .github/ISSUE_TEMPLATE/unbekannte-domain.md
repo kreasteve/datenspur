@@ -1,6 +1,6 @@
 ---
 name: Unbekannte Domain melden
-about: Eine Drittanbieter-Domain, die WebWatch nicht zuordnen konnte
+about: Eine Drittanbieter-Domain, die Datenspur nicht zuordnen konnte
 title: 'Unbekannte Domain: '
 labels: unbekannte-domain
 ---

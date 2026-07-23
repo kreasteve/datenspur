@@ -15,9 +15,9 @@ cp src/manifest.chrome.json dist/chrome/manifest.json
 # Firefox lädt den Chrome-Service-Worker-Einstieg nicht
 rm -f dist/firefox/background/sw.js
 
-(cd dist/firefox && zip -qr ../webwatch-firefox.zip .)
-(cd dist/chrome && zip -qr ../webwatch-chrome.zip .)
+(cd dist/firefox && zip -qr ../datenspur-firefox.zip .)
+(cd dist/chrome && zip -qr ../datenspur-chrome.zip .)
 
 echo "Fertig:"
-echo "  dist/firefox/  (+ dist/webwatch-firefox.zip)"
-echo "  dist/chrome/   (+ dist/webwatch-chrome.zip)"
+echo "  dist/firefox/  (+ dist/datenspur-firefox.zip)"
+echo "  dist/chrome/   (+ dist/datenspur-chrome.zip)"
