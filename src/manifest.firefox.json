@@ -3,7 +3,7 @@
   "name": "WebWatch",
   "version": "0.1.0",
   "description": "Macht sichtbar, was besuchte Websites an ihre Server und an Dritte schicken — mit Klartext-Erklärungen für Laien und Rohdaten für Profis. Alles bleibt lokal.",
-  "homepage_url": "https://github.com/webwatch-extension/webwatch",
+  "homepage_url": "https://github.com/kreasteve/webwatch",
   "permissions": [
     "webRequest",
     "tabs",
