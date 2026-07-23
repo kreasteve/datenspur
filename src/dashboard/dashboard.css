@@ -194,6 +194,7 @@ button.std {
   border: 1px solid var(--border); background: var(--surface); color: var(--ink);
 }
 button.std:hover { background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+button.std.small { font-size: 12px; padding: 4px 9px; }
 
 /* ── Netzwerk ───────────────────────────────────────────────── */
 .graphwrap { overflow-x: auto; }

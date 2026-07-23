@@ -1,0 +1,49 @@
+name: Domain-Recherche
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  research:
+    if: contains(github.event.issue.labels.*.name, 'unbekannte-domain')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Domains aus dem Issue ziehen und recherchieren
+        env:
+          # Indirektion über env schützt vor Shell-Injection aus Issue-Texten;
+          # der grep unten lässt ohnehin nur [a-z0-9.-]-Domains durch.
+          ISSUE_TEXT: |
+            ${{ github.event.issue.title }}
+            ${{ github.event.issue.body }}
+        run: |
+          DOMAINS=$(printf '%s' "$ISSUE_TEXT" \
+            | grep -oiE '\b([a-z0-9][a-z0-9-]*\.)+[a-z]{2,}\b' \
+            | tr 'A-Z' 'a-z' \
+            | grep -viE '(^|\.)github\.com$|(^|\.)githubusercontent\.com$|(^|\.)beispiel-domain\.com$' \
+            | sort -u | head -10)
+          if [ -z "$DOMAINS" ]; then
+            printf 'Im Issue wurden keine Domains gefunden — bitte Domain im Format `beispiel.com` angeben.\n' > recherche.md
+          else
+            {
+              echo '## Automatische Recherche (`tools/research_domain.js`)'
+              echo
+              echo '```'
+              node tools/research_domain.js $DOMAINS 2>&1 | head -300
+              echo '```'
+              echo
+              echo '_Bitte Belege prüfen, Kategorie wählen und den Eintrag in `src/common/trackerdb.js` ergänzen (siehe README, „Wie die Datenbank wächst")._'
+            } > recherche.md
+          fi
+      - name: Ergebnis als Kommentar posten
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body-file recherche.md

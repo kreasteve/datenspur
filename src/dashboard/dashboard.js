@@ -23,6 +23,31 @@
 
   const cat = (c) => WW.CATEGORIES[c] || WW.CATEGORIES.unknown;
   const anfragen = (n) => `${n} ${n === 1 ? 'Anfrage' : 'Anfragen'}`;
+  const REPO_URL = 'https://github.com/kreasteve/webwatch';
+
+  // Meldung unbekannter Domains: öffnet ein vorausgefülltes GitHub-Issue.
+  // Bewusst KEIN direkter Versand — der Nutzer sieht vor dem Absenden genau,
+  // was gemeldet wird, und kann es bearbeiten oder abbrechen.
+  const reportUnknown = (keys) => {
+    const d = state.data;
+    if (!d) return;
+    const ents = keys.map((k) => d.agg.entities[k]).filter(Boolean);
+    if (!ents.length) return;
+    const lines = ['**Unbekannte Drittanbieter-Domain(s):**', ''];
+    for (const e of ents) {
+      lines.push(`- \`${e.name}\` (gesehen als: ${Object.keys(e.hosts).join(', ')}; ${anfragen(e.count)})`);
+    }
+    lines.push('', `**Gesehen beim Besuch von:** ${d.tab.pageBase || '?'}`,
+      '_(Hinweis: Die besuchte Seite hilft bei der Zuordnung — du kannst sie vor dem Absenden aber entfernen.)_',
+      '', `_Gemeldet aus WebWatch ${B.runtime.getManifest().version}. Zu klären: Wem gehört die Domain, was macht der Dienst, welche Kategorie passt?_`);
+    const title = ents.length === 1
+      ? 'Unbekannte Domain: ' + ents[0].name
+      : `Unbekannte Domains (${ents.length}) von ${d.tab.pageBase || '?'}`;
+    const url = REPO_URL + '/issues/new?labels=unbekannte-domain'
+      + '&title=' + encodeURIComponent(title)
+      + '&body=' + encodeURIComponent(lines.join('\n'));
+    B.tabs.create({ url });
+  };
   const riskClass = (c) => 'r' + cat(c).risiko;
   const RISK_NAME = { 1: 'Risiko: gering', 2: 'Risiko: mittel', 3: 'Risiko: hoch' };
   const isProfi = () => state.mode === 'profi';
@@ -124,10 +149,12 @@
         const group = ents.filter((e) => e.cat === c).sort((a, b) => b.count - a.count);
         if (!group.length) continue;
         const ci = cat(c);
+        const isUnknown = c === 'unknown';
         html += `<div class="cathead">
             <span class="rdot ${riskClass(c)}"></span><h3>${WW.esc(ci.titel)}</h3>
             <span class="riskchip ${riskClass(c)}">${RISK_NAME[ci.risiko]}</span>
             <span class="desc">${WW.esc(ci.kurz)}</span>
+            ${isUnknown && group.length > 1 ? `<button class="std small" id="report-all-unknown" title="Öffnet ein vorausgefülltes GitHub-Issue — du siehst vor dem Absenden genau, was gemeldet wird">Alle ${group.length} melden</button>` : ''}
           </div><div class="entgrid">`;
         for (const e of group) {
           const full = e.known ? WW.entityById(e.key) : null;
@@ -137,6 +164,7 @@
             ${e.owner ? `<div class="owner">gehört zu: ${WW.esc(e.owner)}${e.sameOwner ? ' — Anbieter dieser Seite' : ''}</div>` : `<div class="owner">${WW.esc(Object.keys(e.hosts).join(', '))}</div>`}
             ${full ? `<div class="info">${WW.esc(full.info)}</div>` : `<div class="info">${WW.esc(cat(c).kurz)}</div>`}
             ${kinds.length ? `<div class="badges">${kinds.map((k) => badgeFor(k, e.kinds[k], agg)).join('')}</div>` : ''}
+            ${isUnknown ? `<div style="margin-top:8px"><button class="std small report" data-key="${WW.esc(e.key)}" title="Öffnet ein vorausgefülltes GitHub-Issue — du siehst vor dem Absenden genau, was gemeldet wird">Domain melden — hilft der Datenbank</button></div>` : ''}
           </div>`;
         }
         html += '</div>';
@@ -146,6 +174,12 @@
       html += '<div class="card hint">Keine Verbindungen zu Drittservern beobachtet.</div>';
     }
     el.innerHTML = html;
+
+    $$('#view-uebersicht .report').forEach((b) => b.addEventListener('click', () => reportUnknown([b.dataset.key])));
+    const all = $('#report-all-unknown');
+    if (all) all.addEventListener('click', () => {
+      reportUnknown(Object.values(agg.entities).filter((e) => !e.known).map((e) => e.key));
+    });
   };
 
   const badgeFor = (kind, n, agg) => {
