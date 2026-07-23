@@ -120,6 +120,11 @@ const check = (name, cond, extra) => {
     const headers = await dash.$$eval('table.req th', (ths) => ths.map((t) => t.textContent));
     check('„Was passiert"-Spalte (Einfach-Modus)', headers.includes('Was passiert'), headers);
     check('Erstanbieter sichtbar (Default-Filter aus)', await dash.$$eval('td.firstparty', (t) => t.length) > 0);
+    check('Kopier-Button auch im Einfach-Modus', !!(await dash.$('#btn-copy')));
+    await dash.click('#btn-copy');
+    await dash.waitForTimeout(400);
+    const copyLabel = await dash.$eval('#btn-copy', (b) => b.textContent);
+    check('Auswertung wurde kopiert', copyLabel.includes('Kopiert'), copyLabel);
     await rows[1].click();
     await dash.waitForSelector('#detail .card');
     check('Detailansicht öffnet sich', !!(await dash.$('#detail .card')));

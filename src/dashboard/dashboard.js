@@ -196,8 +196,10 @@
         <label class="cb"><input type="checkbox" id="f-ins" ${state.onlyIns ? 'checked' : ''}> nur mit Erkenntnissen</label>
         <span class="spacer"></span>
         <span class="count">${rows.length} von ${d.tab.requests.length} Anfragen</span>
-        ${profi ? '<button id="btn-export">Als JSON exportieren</button>' : ''}
+        <button id="btn-copy" title="Kopiert die komplette Auswertung als JSON in die Zwischenablage">Auswertung kopieren</button>
+        ${profi ? '<button id="btn-export" title="Vollständiger Export inkl. Roh-Headern und Bodys als Datei">Als Datei speichern</button>' : ''}
       </div>
+      <div class="hint" style="margin-top:8px">💡 Tipp: „Auswertung kopieren" und den Text einer KI (z. B. Claude) einfügen — mit der Frage „Was verrät dieser Mitschnitt über mich?". Ein passender Fragevorschlag ist im kopierten Text schon enthalten.</div>
     </div>`;
 
     html += `<div class="reqlayout ${state.selectedRid ? 'split' : ''}">
@@ -229,6 +231,8 @@
     $('#f-ins').addEventListener('change', (e) => { state.onlyIns = e.target.checked; renderRequests(); });
     const exp = $('#btn-export');
     if (exp) exp.addEventListener('click', exportJson);
+    const cpy = $('#btn-copy');
+    if (cpy) cpy.addEventListener('click', () => copyJson(cpy));
     $$('#view-anfragen tr.row').forEach((tr) => tr.addEventListener('click', () => {
       state.selectedRid = tr.dataset.rid === state.selectedRid ? null : tr.dataset.rid;
       renderRequests();
@@ -329,15 +333,88 @@
     box.innerHTML = html;
   };
 
-  const exportJson = () => {
+  // Export mit deutschen Feldnamen und eingebautem Erklärtext, damit auch
+  // eine KI (oder ein Mensch) ohne Vorwissen etwas damit anfangen kann.
+  // compact=true lässt Roh-Header/Bodys weg — für die Zwischenablage.
+  const exportData = (full) => {
     const d = state.data;
-    if (!d) return;
-    const blob = new Blob([JSON.stringify({ exportiert: new Date().toISOString(), seite: d.tab.pageUrl, auswertung: d.score, anfragen: d.tab.requests }, null, 2)], { type: 'application/json' });
+    const anfr = d.tab.requests.map((r) => {
+      const o = {
+        zeit: new Date(r.ts).toISOString(),
+        host: r.host,
+        url: WW.cap(r.url, full ? 2000 : 300),
+        methode: r.method,
+        typ: r.type,
+        drittanbieter: !!r.tp,
+      };
+      if (r.entity) {
+        o.firma = r.entity.name;
+        if (r.entity.owner) o.konzern = r.entity.owner;
+        o.kategorie = cat(r.entity.cat).titel;
+      } else if (r.tp) {
+        o.firma = 'unbekannt (' + (r.base || r.host) + ')';
+      }
+      if (r.status) o.status = r.status;
+      if (r.err) o.fehler = r.err;
+      const ins = (r.insights || []).map((i) => i.label + (i.detail ? ' — ' + i.detail : ''));
+      if (ins.length) o.erkenntnisse = ins;
+      const params = [...(r.query || []), ...((r.body && r.body.params) || [])];
+      if (params.length) {
+        o.daten = params.slice(0, full ? 80 : 40).map((p) => {
+          const label = WW.paramLabel(p.k);
+          const row = { feld: p.k };
+          if (label) row.bedeutung = label;
+          row.wert = WW.cap(String(WW.tryDecodeValue(p.v)), full ? 500 : 200);
+          return row;
+        });
+      }
+      if (full) {
+        if (r.reqHeaders) o.header = r.reqHeaders.map((h) => h.name + ': ' + h.value);
+        if (r.body && r.body.text) o.body_roh = r.body.text;
+      }
+      return o;
+    });
+    return {
+      hinweis: 'WebWatch-Mitschnitt: alle Verbindungen, die der Browser beim Besuch dieser Seite aufgebaut hat — wohin sie gingen, wem die Gegenstelle gehört und welche Daten mitgeschickt wurden. Diesen Text kann man z. B. einer KI geben und sich erklären lassen, was er bedeutet.',
+      frage_vorschlag: 'Bitte erkläre mir verständlich: Was verrät dieser Mitschnitt über mich, welche Firmen bekommen dabei Daten, wozu vermutlich — und was davon ist bedenklich?',
+      exportiert: new Date().toISOString(),
+      seite: d.tab.pageUrl,
+      bewertung: { ampel: d.score.level, zusammenfassung: d.score.satz },
+      anfragen: anfr,
+    };
+  };
+
+  const exportJson = () => {
+    if (!state.data) return;
+    const blob = new Blob([JSON.stringify(exportData(true), null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'webwatch-' + (d.tab.pageHost || 'export') + '.json';
+    a.download = 'webwatch-' + (state.data.tab.pageHost || 'export') + '.json';
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+  };
+
+  const copyJson = async (btn) => {
+    if (!state.data) return;
+    const text = JSON.stringify(exportData(false), null, 1);
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(text);
+      ok = true;
+    } catch (e) {
+      // Fallback ohne Clipboard-API (z. B. fehlende Berechtigung)
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { ok = document.execCommand('copy'); } catch (e2) { /* ok bleibt false */ }
+      ta.remove();
+    }
+    const prev = btn.textContent;
+    btn.textContent = ok ? '✓ Kopiert — jetzt z. B. einer KI geben' : 'Kopieren fehlgeschlagen';
+    setTimeout(() => { btn.textContent = prev; }, 3000);
   };
 
   // ── Netzwerk-Graph ──────────────────────────────────────────
