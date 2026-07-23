@@ -1,8 +1,11 @@
 name: Domain-Recherche
 
 on:
+  # Nur "labeled": Beim Erstellen mit Label feuert GitHub opened UND labeled —
+  # mit beiden Typen liefe die Recherche doppelt. "labeled" deckt beides ab
+  # (Label beim Erstellen und nachträgliches Labeln).
   issues:
-    types: [opened, labeled]
+    types: [labeled]
   workflow_dispatch:
     inputs:
       issue:
@@ -15,7 +18,7 @@ permissions:
 
 jobs:
   research:
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'unbekannte-domain')
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'unbekannte-domain'
     runs-on: ubuntu-latest
     env:
       ISSUE_NR: ${{ github.event_name == 'workflow_dispatch' && inputs.issue || github.event.issue.number }}

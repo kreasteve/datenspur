@@ -73,6 +73,7 @@ t('classify accounts.google', WW.classifyHost('accounts.google.com') && WW.class
 t('classify trustindex', WW.classifyHost('cdn.trustindex.io') && WW.classifyHost('cdn.trustindex.io').id === 'trustindex');
 t('classify mateti → Mapp', WW.classifyHost('cdn.mateti.net') && WW.classifyHost('cdn.mateti.net').id === 'mapp');
 t('classify netid', WW.classifyHost('einwilligungsspeicher.netid.de') && WW.classifyHost('einwilligungsspeicher.netid.de').id === 'netid');
+t('classify anthropic', WW.classifyHost('api.anthropic.com') && WW.classifyHost('api.anthropic.com').id === 'anthropic');
 
 // Typ-Labels für den Einfach-Modus
 t('typeLabel Bild', WW.typeLabel('image', 'GET') === 'Bild laden');

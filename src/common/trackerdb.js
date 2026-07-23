@@ -595,6 +595,9 @@ globalThis.WW = globalThis.WW || {};
     E('voxmedia', 'Vox Media Infrastruktur', 'Vox Media', 'cdn',
       ['voxmedia.com', 'vox-cdn.com'],
       'Verlags-Infrastruktur von Vox Media (The Verge u. a.).'),
+    E('anthropic', 'Anthropic (Claude)', 'Anthropic', 'cdn',
+      ['anthropic.com', 'claude.ai'],
+      'Eigene API- und Auslieferungs-Domains von Anthropic für Claude (claude.ai).'),
 
     // ── Weitere Ad-Tech aus der Feld-Erhebung ────────────────────────────
     E('btloader', 'Blockthrough', 'Blockthrough', 'advertising',
