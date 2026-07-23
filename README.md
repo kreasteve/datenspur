@@ -68,6 +68,29 @@ kontaktiert hat; die Farbe die Ampel-Einstufung.
   der vollen Public Suffix List; exotische ccTLDs können falsch eingeordnet
   werden.
 
+## Wie die Datenbank wächst
+
+Die Tracker-DB (`src/common/trackerdb.js`) ist handkuratiert. Damit sie
+wachsen kann, gibt es eine Werkzeugkette:
+
+1. **Kandidaten sammeln** — `node smoketest/crawl_unknown.js` besucht eine
+   Seitenliste mit geladener Extension und listet alle Drittanbieter-Domains,
+   die die DB noch nicht kennt (sortiert nach Verbreitung).
+2. **Belege recherchieren** — `node tools/research_domain.js <domain> …`
+   sammelt pro Domain automatisch: RDAP-Inhaber, CNAME-Kette (enttarnt
+   getarntes Tracking), TLS-Zertifikats-Organisation, Homepage-Titel/-Text
+   und die Betreiber-Zuordnung aus dem offenen DuckDuckGo Tracker Radar —
+   und schlägt einen Eintrag vor. (Die Quellen werden nur zur Recherche
+   abgefragt; Einträge und Texte bleiben selbst geschrieben.)
+3. **Eintrag schreiben** — Kategorie wählen, deutschen Ein-Satz-Infotext
+   verfassen, in die passende Sektion von `trackerdb.js` einsortieren.
+4. **Absichern** — `node tests/run_tests.js` prüft u. a., dass keine Domain
+   doppelt vergeben ist; ein Klassifikations-Test pro neuem Eintrag ist
+   erwünscht.
+
+Regel: Was sich nicht belegen lässt, bleibt draußen — „unbekannt" ist eine
+ehrliche Aussage und im Dashboard ein Hinweis, selbst genauer hinzuschauen.
+
 ## Entwicklung
 
 ```

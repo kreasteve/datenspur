@@ -70,6 +70,8 @@ t('classify datadome', WW.classifyHost('ct.captcha-delivery.com') && WW.classify
 t('classify bombora', WW.classifyHost('cdn.ml314.com') && WW.classifyHost('cdn.ml314.com').cat === 'audience');
 t('classify adition html-load', WW.classifyHost('html-load.com') && WW.classifyHost('html-load.com').id === 'adition');
 t('classify accounts.google', WW.classifyHost('accounts.google.com') && WW.classifyHost('accounts.google.com').id === 'google-login');
+t('classify trustindex', WW.classifyHost('cdn.trustindex.io') && WW.classifyHost('cdn.trustindex.io').id === 'trustindex');
+t('classify mateti → Mapp', WW.classifyHost('cdn.mateti.net') && WW.classifyHost('cdn.mateti.net').id === 'mapp');
 
 // Typ-Labels für den Einfach-Modus
 t('typeLabel Bild', WW.typeLabel('image', 'GET') === 'Bild laden');
