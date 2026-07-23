@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>WebWatch</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <div class="logo"><img src="../icons/icon-32.png" alt="" width="18" height="18"> WebWatch</div>
+    <div id="host" class="host"></div>
+  </header>
+  <main id="main">
+    <div class="empty">Lade …</div>
+  </main>
+  <div class="actions">
+    <button id="btn-dash" class="primary">Details &amp; Erklärungen</button>
+    <button id="btn-reset" class="ghost" title="Aufzeichnung für diesen Tab neu starten">Zurücksetzen</button>
+  </div>
+  <div class="note">WebWatch sendet selbst nichts nach Hause — alle Daten bleiben in deinem Browser.</div>
+  <script src="../common/compat.js"></script>
+  <script src="../common/categories.js"></script>
+  <script src="../common/score.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

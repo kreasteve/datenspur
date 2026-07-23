@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>WebWatch — Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><img src="../icons/icon-32.png" alt="" width="20" height="20"> WebWatch</div>
+    <div class="pageinfo" id="pageinfo"></div>
+    <nav class="views">
+      <button data-view="uebersicht" class="active">Übersicht</button>
+      <button data-view="anfragen">Anfragen</button>
+      <button data-view="netzwerk">Netzwerk</button>
+      <button data-view="lexikon">Lexikon</button>
+    </nav>
+    <div class="mode" title="Einfach: Klartext-Erklärungen. Profi: zusätzlich Rohdaten (Header, Bodys, alle Spalten).">
+      <button id="mode-laie" class="active">Einfach</button>
+      <button id="mode-profi">Profi</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="view-uebersicht" class="view"></section>
+    <section id="view-anfragen" class="view" hidden></section>
+    <section id="view-netzwerk" class="view" hidden></section>
+    <section id="view-lexikon" class="view" hidden></section>
+  </main>
+
+  <div id="picker" class="picker" hidden></div>
+
+  <script src="../common/compat.js"></script>
+  <script src="../common/domain.js"></script>
+  <script src="../common/categories.js"></script>
+  <script src="../common/trackerdb.js"></script>
+  <script src="../common/decoder.js"></script>
+  <script src="../common/score.js"></script>
+  <script src="dashboard.js"></script>
+</body>
+</html>

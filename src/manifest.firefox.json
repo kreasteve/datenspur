@@ -1,0 +1,48 @@
+{
+  "manifest_version": 2,
+  "name": "WebWatch",
+  "version": "0.1.0",
+  "description": "Macht sichtbar, was besuchte Websites an ihre Server und an Dritte schicken — mit Klartext-Erklärungen für Laien und Rohdaten für Profis. Alles bleibt lokal.",
+  "homepage_url": "https://github.com/webwatch-extension/webwatch",
+  "permissions": [
+    "webRequest",
+    "tabs",
+    "storage",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "common/compat.js",
+      "common/domain.js",
+      "common/categories.js",
+      "common/trackerdb.js",
+      "common/decoder.js",
+      "common/insights.js",
+      "common/score.js",
+      "background/store.js",
+      "background/capture.js",
+      "background/main.js"
+    ],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_title": "WebWatch — was schickt diese Seite wohin?",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "webwatch@webwatch-extension.org",
+      "strict_min_version": "115.0"
+    }
+  }
+}
