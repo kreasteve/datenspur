@@ -3,6 +3,11 @@ name: Domain-Recherche
 on:
   issues:
     types: [opened, labeled]
+  workflow_dispatch:
+    inputs:
+      issue:
+        description: 'Issue-Nummer, die recherchiert werden soll'
+        required: true
 
 permissions:
   issues: write
@@ -10,21 +15,32 @@ permissions:
 
 jobs:
   research:
-    if: contains(github.event.issue.labels.*.name, 'unbekannte-domain')
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.issue.labels.*.name, 'unbekannte-domain')
     runs-on: ubuntu-latest
+    env:
+      ISSUE_NR: ${{ github.event_name == 'workflow_dispatch' && inputs.issue || github.event.issue.number }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - name: Domains aus dem Issue ziehen und recherchieren
+      - name: Issue-Text laden (bei manuellem Start)
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue view "$ISSUE_NR" --repo ${{ github.repository }} --json title,body --jq '.title + "\n" + .body' > issue_text.txt
+      - name: Issue-Text ablegen (bei Issue-Event)
+        if: github.event_name != 'workflow_dispatch'
         env:
           # Indirektion über env schützt vor Shell-Injection aus Issue-Texten;
           # der grep unten lässt ohnehin nur [a-z0-9.-]-Domains durch.
           ISSUE_TEXT: |
             ${{ github.event.issue.title }}
             ${{ github.event.issue.body }}
+        run: printf '%s' "$ISSUE_TEXT" > issue_text.txt
+      - name: Domains ziehen und recherchieren
         run: |
+          ISSUE_TEXT=$(cat issue_text.txt)
           DOMAINS=$(printf '%s' "$ISSUE_TEXT" \
             | grep -oiE '\b([a-z0-9][a-z0-9-]*\.)+[a-z]{2,}\b' \
             | tr 'A-Z' 'a-z' \
@@ -46,4 +62,4 @@ jobs:
       - name: Ergebnis als Kommentar posten
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body-file recherche.md
+        run: gh issue comment "$ISSUE_NR" --repo ${{ github.repository }} --body-file recherche.md
