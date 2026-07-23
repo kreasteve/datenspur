@@ -11,16 +11,16 @@ WW.CATEGORIES = {
     lang: 'Werbenetzwerke sind auf zigtausenden Websites gleichzeitig eingebaut. Dadurch sehen sie nicht nur, dass du diese eine Seite besuchst — sie können Besuche über viele Seiten hinweg zu einem Profil verknüpfen, meist über Cookies, Klick-Kennungen in Links oder Browser-IDs. Aus dem Surfverlauf lassen sich Interessen, Kaufabsichten, finanzielle Verhältnisse, Gesundheitsthemen oder politische Neigungen ableiten. Beim sogenannten Real-Time Bidding wird bei jedem Seitenaufruf in Millisekunden eine Auktion um den Werbeplatz abgehalten — dabei werden Daten über dich (besuchte Seite, ungefährer Standort, Gerätemerkmale, Profil-Kennungen) an hunderte Bieter gleichzeitig gestreut. Gefahren: Kontrollverlust darüber, wer was über dich weiß; sensible Interessen (Krankheit, Schulden, Religion) landen in fremden Datenbanken; Profile können weiterverkauft, geleakt oder von Behörden abgefragt werden.',
   },
   audience: {
-    titel: 'Datenhändler & ID-Abgleich',
+    titel: 'Datenplattformen & ID-Abgleich',
     risiko: 3,
-    kurz: 'Firmen, deren Geschäftsmodell das Sammeln, Verknüpfen und Verkaufen von Nutzerprofilen ist.',
-    lang: 'Diese Dienste tauchen selten sichtbar auf, sind aber das Bindegewebe der Tracking-Industrie: Sie gleichen Kennungen zwischen verschiedenen Werbefirmen ab („Cookie-Syncing", „ID-Matching"), damit Profil A von Firma X mit Profil B von Firma Y zur selben Person zusammengeführt werden kann. Manche verknüpfen das Surfverhalten sogar mit Offline-Daten wie Einkäufen, Adressen oder Kundenkarten. Wenn so ein Dienst auftaucht, wird gerade deine Kennung zwischen Firmen abgeglichen oder dein Profil angereichert. Gefahren: Aus vielen harmlosen Einzeldaten entsteht ein erstaunlich vollständiges Bild einer Person, das ohne ihr Wissen gehandelt wird — die betroffene Person hat praktisch keine Möglichkeit mehr nachzuvollziehen, wo ihre Daten überall liegen.',
+    kurz: 'Dienste, die Nutzerprofile sammeln, verknüpfen oder Kennungen zwischen Werbefirmen abgleichen — teils Datenhändler, teils Technik-Anbieter.',
+    lang: 'Diese Dienste tauchen selten sichtbar auf, sind aber das Bindegewebe der Tracking-Industrie: Sie gleichen Kennungen zwischen verschiedenen Werbefirmen ab („Cookie-Syncing", „ID-Matching"), damit Profil A von Firma X mit Profil B von Firma Y zur selben Person zusammengeführt werden kann. Manche verknüpfen das Surfverhalten sogar mit Offline-Daten wie Einkäufen, Adressen oder Kundenkarten. Wenn so ein Dienst auftaucht, wird gerade deine Kennung zwischen Firmen abgeglichen oder dein Profil angereichert. Gefahren: Aus vielen harmlosen Einzeldaten entsteht ein erstaunlich vollständiges Bild einer Person, das oft ohne ihr Wissen geteilt oder gehandelt wird — die betroffene Person kann kaum noch nachvollziehen, wo ihre Daten überall liegen.',
   },
   session: {
     titel: 'Sitzungsaufzeichnung',
     risiko: 3,
     kurz: 'Zeichnet Mausbewegungen, Klicks, Scrollen und teils Tastatureingaben auf — wie ein Video deines Besuchs.',
-    lang: 'Session-Recording-Dienste zeichnen detailliert auf, was du auf der Seite tust: jede Mausbewegung, jeden Klick, jedes Scrollen, die Verweildauer auf einzelnen Elementen — und je nach Konfiguration auch Tastatureingaben in Formularfelder. Der Website-Betreiber kann sich deinen Besuch anschließend wie einen Film ansehen oder als „Heatmap" auswerten. Gedacht ist das zur Verbesserung der Bedienbarkeit. Das Problem: Die Aufzeichnung läuft ohne dein Wissen, die Daten liegen bei einem Dritten, und es kam wiederholt vor, dass Passwörter, Kreditkartennummern oder Krankendaten versehentlich mitgeschnitten wurden, weil Formularfelder nicht sauber ausgenommen waren. Gefahr: sehr intime Verhaltensdaten und womöglich sensible Eingaben in fremder Hand.',
+    lang: 'Session-Recording-Dienste zeichnen detailliert auf, was du auf der Seite tust: jede Mausbewegung, jeden Klick, jedes Scrollen, die Verweildauer auf einzelnen Elementen — und je nach Konfiguration auch Tastatureingaben in Formularfelder. Der Website-Betreiber kann sich deinen Besuch anschließend wie einen Film ansehen oder als „Heatmap" auswerten. Gedacht ist das zur Verbesserung der Bedienbarkeit. Das Problem: Die Aufzeichnung läuft ohne dein Wissen, die Daten liegen bei einem Dritten, und Sicherheitsstudien fanden wiederholt Fälle, in denen Passwörter, Kreditkartennummern oder Krankendaten versehentlich mitgeschnitten wurden, weil Formularfelder nicht sauber ausgenommen waren. Gefahr: sehr intime Verhaltensdaten und womöglich sensible Eingaben in fremder Hand.',
   },
   analytics: {
     titel: 'Statistik & Analyse',
@@ -83,6 +83,9 @@ WW.CATEGORIES = {
     lang: 'Nicht jede fremde Domain lässt sich automatisch einordnen — die WebWatch-Datenbank umfasst die verbreitetsten Dienste, aber bei weitem nicht alle. „Unbekannt" heißt also nicht harmlos und nicht gefährlich, sondern: hier lohnt ein eigener Blick. Hilfreiche Fragen: Was wurde übertragen (siehe Detailansicht)? Klingt der Domainname nach einem CDN des Seitenbetreibers oder nach etwas Fremdem? Eine Websuche nach der Domain bringt oft schnell Klarheit.',
   },
 };
+
+// Redaktionsstand der Datenbank- und Lexikontexte
+WW.DB_STAND = 'Juli 2026';
 
 // Reihenfolge für Anzeigen (nach Risiko, dann thematisch)
 WW.CATEGORY_ORDER = [

@@ -32,5 +32,7 @@ sich selbst daran:
 
 ## Kontakt
 
-Fragen und Meldungen: über den Issue-Tracker des Quellcode-Repositories.
+Fragen und Meldungen: über den [Issue-Tracker des Quellcode-Repositories](https://github.com/kreasteve/webwatch/issues)
+oder das [Impressum](https://kreasteve.de/impressum.html).
 Der vollständige Quellcode ist offen (MIT-Lizenz) und überprüfbar.
+Hinweise für betroffene Unternehmen: [KORREKTUREN.md](KORREKTUREN.md).

@@ -71,7 +71,7 @@ globalThis.WW = globalThis.WW || {};
 
   const CAT_PLURAL = {
     advertising: ['Werbe-/Tracking-Dienst', 'Werbe-/Tracking-Dienste'],
-    audience: ['Datenhändler', 'Datenhändler'],
+    audience: ['Profildaten-Dienst', 'Profildaten-Dienste'],
     session: ['Sitzungsaufzeichner', 'Sitzungsaufzeichner'],
     analytics: ['Analysedienst', 'Analysedienste'],
     social: ['soziales Netzwerk', 'soziale Netzwerke'],
@@ -100,7 +100,7 @@ globalThis.WW = globalThis.WW || {};
     if (ins['fingerprint']) { level = 'rot'; reasons.push('ein Geräte-Fingerabdruck wurde übertragen'); }
     if (ins['geo']) { level = 'rot'; reasons.push('Standortdaten wurden übertragen'); }
     if (n('session') > 0) { level = 'rot'; reasons.push('das Verhalten auf der Seite wird aufgezeichnet'); }
-    if (n('audience') > 0) { level = 'rot'; reasons.push('Datenhändler wurden kontaktiert'); }
+    if (n('audience') > 0) { level = 'rot'; reasons.push('Dienste für Profildaten und ID-Abgleich wurden kontaktiert'); }
     if (n('advertising') >= 4) { level = 'rot'; reasons.push('sehr viele Werbenetzwerke sind eingebunden'); }
 
     if (level !== 'rot') {

@@ -561,6 +561,12 @@
     html += `<div class="card"><h2>Über WebWatch — und seine Grenzen</h2>
       <p>WebWatch zeigt, welche Verbindungen dein Browser beim Besuch einer Seite aufbaut und welche Daten dabei abgeschickt werden. Alles bleibt lokal in deinem Browser; WebWatch selbst baut keine eigenen Verbindungen auf und blockiert nichts — es macht nur sichtbar.</p>
       <p>Grenzen: WebWatch sieht nur ausgehende Daten, nicht was der Empfänger damit macht. Die Firmen-Datenbank ist kuratiert und unvollständig — „unbekannt" heißt nur: nicht in der Datenbank. Verschlüsselte oder komprimierte Inhalte lassen sich nicht als Text darstellen. Anfragen anderer Browser-Erweiterungen und Systemdienste erscheinen nicht. Und: Was du siehst, hängt stark von deiner Cookie-Banner-Entscheidung und installierten Blockern ab — dieselbe Seite kann bei anderen Menschen ganz anders aussehen.</p>
+      <p><b>Redaktioneller Hinweis:</b> Firmen-Zuordnungen und Beschreibungen beruhen auf öffentlich zugänglichen Quellen (Registrierungsdaten, DNS, Zertifikate, Selbstbeschreibungen der Dienste, offene Datensätze); Kategorien und Risiko-Einstufungen sind redaktionelle Bewertungen. Stand: ${WW.esc(WW.DB_STAND)}. Falsche Angaben korrigieren wir nach Prüfung umgehend.</p>
+      <p>
+        <a href="https://github.com/kreasteve/webwatch" target="_blank" rel="noopener">Quellcode (GitHub)</a> ·
+        <a href="https://github.com/kreasteve/webwatch/blob/main/KORREKTUREN.md" target="_blank" rel="noopener">Korrekturen &amp; Hinweise für betroffene Unternehmen</a> ·
+        <a href="https://kreasteve.de/impressum.html" target="_blank" rel="noopener">Impressum</a>
+      </p>
     </div></div>`;
     el.innerHTML = html;
   };

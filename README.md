@@ -114,6 +114,19 @@ build.sh             baut dist/firefox, dist/chrome + ZIPs
 
 Tests laufen ohne Browser: `node tests/run_tests.js`
 
+## Redaktioneller Hinweis & Kontakt
+
+Firmen-Zuordnungen und Beschreibungstexte beruhen auf öffentlich
+zugänglichen Quellen (Registrierungsdaten, DNS, TLS-Zertifikate,
+Selbstbeschreibungen der Dienste, offene Datensätze); Kategorien und
+Risiko-Einstufungen sind **redaktionelle Bewertungen** auf dieser
+Faktenbasis. Stand der Texte: **Juli 2026**.
+
+Falsche Angaben korrigieren wir nach Prüfung umgehend — betroffene
+Unternehmen finden das Verfahren in [KORREKTUREN.md](KORREKTUREN.md).
+Verantwortlich im Sinne des Presserechts / Kontakt:
+[Impressum](https://kreasteve.de/impressum.html).
+
 ## Lizenz
 
 MIT — siehe [LICENSE](LICENSE).
